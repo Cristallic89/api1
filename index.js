@@ -39,14 +39,16 @@ app.post('/api/users', (req, res) => {
 
     const user = {
        id: users.length + 1,
-        username: req.body.username
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
     };
 
     users.push(user);
     res.send(user);
 });
 
-
+//UPDATE(PUT)
 app.put('/api/users/:id', (req, res) => {
 // otsib üles user'i väärtuse ja kui ei leia annab 404 errori
     const user = users.find(c => c.id === parseInt(req.params.id));
@@ -57,6 +59,8 @@ app.put('/api/users/:id', (req, res) => {
 
 // Update user
     user.username = req.body.username;
+    user.email = req.body.email;
+    user.password = req.body.password;
     res.send(user);
 });
 
