@@ -1,4 +1,4 @@
-//--käivitame express vahetööriista...
+//--käivitame vahetööriistad...
 const Joi = require('joi');
 const express = require('express');
 const app = express();
@@ -37,19 +37,14 @@ app.post('/api/users', (req, res) => {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-
     const user = {
        id: users.length + 1,
         username: req.body.username
     };
+
     users.push(user);
     res.send(user);
 });
-
-
-
-
-
 
 
 app.put('/api/users/:id', (req, res) => {
@@ -66,35 +61,26 @@ app.put('/api/users/:id', (req, res) => {
 });
 
 
-
-
 app.delete('/api/users/:id', (req, res) => {
     // otsib üles antud id'ga user'i. Kui ei ole olemas tuleb error 404
     const user = users.find(c => c.id === parseInt(req.params.id));
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
 
-
     // kustutamine
     const index = users.indexOf(user);
-    users.slice(index, 1);
-
+    users.splice(index, 1);
 
     // user info kuvamine
     res.send(user);
 });
 
 
-
-
 function validateUser(user) {
     const schema = {
         username: Joi.string().min(3).required()
     };
-
     return Joi.validate(user, schema);
 }
-
-
 
 
 app.get('/api/users/:id', (req, res) => {
@@ -102,10 +88,6 @@ app.get('/api/users/:id', (req, res) => {
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
     res.send(user);
 });
-
-
-
-
 
 
 // PORT
