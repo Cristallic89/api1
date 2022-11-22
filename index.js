@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 //---loon users sisu...
-const users = [
+let users = [
     {id: 1, username: 'machimos', email:'machimos@hot.ee', password:'SaVanaKonn123!'},
     {id: 2, username: 'cristallic', email:'cristallic@hot.ee', password:'P0leMeeles112@'},
     {id: 3, username: 'sasuke', email:'sasuke@hot.ee', password:'KesSeeTeab911!!!'},
@@ -43,10 +43,10 @@ app.post('/api/user/Create', (req, res) => {
     res.send(user);
 });
 
-//UPDATE(PUT)
+//UPDATE
 app.post('/api/user/Update', (req, res) => {
 // otsib üles user'i väärtuse ja kui ei leia annab 404 errori
-    const user = users.find(c => c.id === parseInt(req.params.id));
+    const user = users.find(c => c.id === parseInt(req.body.id));
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
 
     const { error } = validateUser(req.body);
@@ -60,6 +60,7 @@ app.post('/api/user/Update', (req, res) => {
 });
 
 
+// DELETE
 app.post('/api/user/Delete/:id', (req, res) => {
     // otsib üles antud id'ga user'i. Kui ei ole olemas tuleb error 404
     const user = users.find(c => c.id === parseInt(req.params.id));
