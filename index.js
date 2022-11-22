@@ -17,14 +17,8 @@ const users = [
 ];
 
 
-//app hakkab kliendilt infot nõudma ja tagasi saatma...
-app.get('/', (req, res) => {
-    res.send('<h1>🙌Tere maailm!<br> Kuidas käsi käib ka? 💕</h1>');
-});
-
-
 // luuakse veebilingi lisa /api/courses millele minnes kuvatakse BODY sisu...
-app.get('/api/users', (req, res) => {
+app.post('/api/user/List', (req, res) => {
     //--tagastatakse users sisu rida (7-14)...
     res.send(users);
 });
@@ -33,7 +27,8 @@ app.get('/api/users', (req, res) => {
 // lisatakse uus user. Uus id läheb users nimekirja järgmise vaba numbrina. Konstant schema kasutades Joi'd
 // paneb paika miinimum tähtede nõude, et päring võiks läbi minna. Kui nõudele ei vastata
 // siis kuvatakse teave.
-app.post('/api/users', (req, res) => {
+app.post('/api/user/Create', (req, res) => {
+    console.log(req.body);
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -49,7 +44,7 @@ app.post('/api/users', (req, res) => {
 });
 
 //UPDATE(PUT)
-app.put('/api/users/:id', (req, res) => {
+app.post('/api/user/Update', (req, res) => {
 // otsib üles user'i väärtuse ja kui ei leia annab 404 errori
     const user = users.find(c => c.id === parseInt(req.params.id));
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
@@ -65,8 +60,10 @@ app.put('/api/users/:id', (req, res) => {
 });
 
 
-app.delete('/api/users/:id', (req, res) => {
+app.delete('/api/user/Delete', (req, res) => {
     // otsib üles antud id'ga user'i. Kui ei ole olemas tuleb error 404
+
+    //(prooviks...mõte...)  let user = users.find(element => element.id === id);
     const user = users.find(c => c.id === parseInt(req.params.id));
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
 
@@ -81,17 +78,20 @@ app.delete('/api/users/:id', (req, res) => {
 
 function validateUser(user) {
     const schema = {
-        username: Joi.string().min(3).required()
+        username: Joi.string().min(3).required(),
+        email: Joi.string().min(3).required(),
+        password: Joi.string().min(3).required()
+
     };
     return Joi.validate(user, schema);
 }
 
 
-app.get('/api/users/:id', (req, res) => {
-    const user = users.find(c => c.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
-    res.send(user);
-});
+//app.get('/api/users/:id', (req, res) => {
+  //  const user = users.find(c => c.id === parseInt(req.params.id));
+    //if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
+   // res.send(user);
+//});
 
 
 // PORT
