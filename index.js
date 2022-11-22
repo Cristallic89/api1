@@ -33,7 +33,7 @@ app.post('/api/user/Create', (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = {
-       id: users.length + 1,
+        id: users.length + 1,
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
@@ -60,10 +60,8 @@ app.post('/api/user/Update', (req, res) => {
 });
 
 
-app.delete('/api/user/Delete', (req, res) => {
+app.post('/api/user/Delete/:id', (req, res) => {
     // otsib üles antud id'ga user'i. Kui ei ole olemas tuleb error 404
-
-    //(prooviks...mõte...)  let user = users.find(element => element.id === id);
     const user = users.find(c => c.id === parseInt(req.params.id));
     if (!user) return res.status(404).send('Antud id-ga kasutajat ei ole');
 
