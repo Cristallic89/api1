@@ -40,7 +40,7 @@ app.post('/api/user/Create', (req, res) => {
     res.send(user);
 });
 
-    //UPDATE
+//UPDATE
 app.post('/api/user/Update', (req, res) => {
     // otsib üles user'i väärtuse ja kui ei leia annab 500 errori
     const user = users.find(c => c.id === parseInt(req.body.id)); //enne oli req.params.id
@@ -85,11 +85,11 @@ function validateUser(user) {
 }
 
 
-//app.get('/api/users/:id', (req, res) => {
-//  const user = users.find(c => c.id === parseInt(req.params.id));
-//if (!user) return res.status(500).send('Antud id-ga kasutajat ei ole');
-// res.send(user);
-//});
+app.get('/api/users/:id', (req, res) => {
+    const user = users.find(c => c.id === parseInt(req.params.id));
+    if (!user) return res.status(500).send('Antud id-ga kasutajat ei ole');
+    res.send(user);
+});
 
 
 // PORT
