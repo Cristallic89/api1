@@ -5,6 +5,9 @@ const app = express();
 const NOT_FOUND_ERROR = {
     id: "go.micro.client", code: 500, detail: "not found", status: "Internal Server Error"
 }
+
+const expressWs = require('express-ws')(app);
+
 app.use(express.json());
 
 //---loon users sisu...
@@ -15,6 +18,13 @@ let users = [{id: 1, username: 'machimos', email: 'machimos@hot.ee', password: '
 }, {id: 5, username: 'playhate', email: 'playhate@hot.ee', password: 'SailAwayOnTuesday555¤'}, {
     id: 6, username: 'kuldmynt', email: 'goldencoin@hot.ee', password: 'BitCoin4ever007'
 }, {id: 7, username: 'toasted', email: 'toasted@hot.ee', password: 'On1Side0nly91#'},];
+
+app.ws('/', function(ws, req) {
+    ws.on('message', function(msg) {
+        expressWs.getWss().clients.forEach(client => client.send(msg));
+    });
+    console.log('socket', req.testing);
+});
 
 
 // luuakse veebilingi lisa /api/courses millele minnes kuvatakse BODY sisu...
